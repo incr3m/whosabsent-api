@@ -14,6 +14,20 @@ var multerS3 = require('multer-s3')
 // AWSHelper.registerFace('students/mina/mina4.jpg','mina');
 // AWSHelper.fetchFaces();
 //AWSHelper.searchFaces('test/test.jpg');
+app.get('/createRek', function (req, res) {
+  AWSHelper.createRekCollection(function(err, data) {
+    if (err) res.send(err, err.stack); 
+    else     res.send(data);           
+  });
+  // res.send('Hello World!');
+});
+app.get('/deleteRek', function (req, res) {
+  AWSHelper.deleteRekCollection(function(err, data) {
+    if (err) res.send(err, err.stack); 
+    else     res.send(data);           
+  });
+});
+
 
 app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");

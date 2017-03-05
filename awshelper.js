@@ -16,27 +16,17 @@ var AWSHelper = (function () {
                 console.log(data);
         });
     };
-    AWSHelper.createRekCollection = function () {
+    AWSHelper.createRekCollection = function (callback) {
         var params = {
             CollectionId: AWSHelper.rekCollectionID
         };
-        AWSHelper.rekognition.createCollection(params, function (err, data) {
-            if (err)
-                console.log(err, err.stack);
-            else
-                console.log(data);
-        });
+        AWSHelper.rekognition.createCollection(params, callback);
     };
-    AWSHelper.deleteRekCollection = function () {
+    AWSHelper.deleteRekCollection = function (callback) {
         var params = {
             CollectionId: AWSHelper.rekCollectionID
         };
-        AWSHelper.rekognition.deleteCollection(params, function (err, data) {
-            if (err)
-                console.log(err, err.stack);
-            else
-                console.log(data);
-        });
+        AWSHelper.rekognition.deleteCollection(params, callback);
     };
     AWSHelper.fetchFaces = function () {
         var params = {

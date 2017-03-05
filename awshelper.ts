@@ -20,23 +20,17 @@ class AWSHelper{
     });
   }
 
-  static createRekCollection(){
+  static createRekCollection(callback){
     var params = {
      CollectionId: AWSHelper.rekCollectionID
     };
-    AWSHelper.rekognition.createCollection(params, function(err, data) {
-      if (err) console.log(err, err.stack); // an error occurred
-      else     console.log(data);           // successful response
-    });
+    AWSHelper.rekognition.createCollection(params, callback);
   }
-  static deleteRekCollection(){
+  static deleteRekCollection(callback){
       var params = {
        CollectionId: AWSHelper.rekCollectionID
       };
-      AWSHelper.rekognition.deleteCollection(params, function(err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
-      });
+      AWSHelper.rekognition.deleteCollection(params, callback);
     }
   static fetchFaces(){
     var params = {
