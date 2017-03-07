@@ -62,7 +62,7 @@ var AWSHelper = (function () {
     AWSHelper.searchFaces = function (key, callback) {
         var params = {
             CollectionId: AWSHelper.rekCollectionID,
-            FaceMatchThreshold: 80,
+            FaceMatchThreshold: 75,
             Image: {
                 S3Object: {
                     Bucket: AWSHelper.bucketName,
