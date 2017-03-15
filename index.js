@@ -28,7 +28,6 @@ app.get('/deleteRek', function (req, res) {
   });
 });
 
-
 app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", "*");
    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -97,8 +96,31 @@ app.post('/upload', upload.single('avatar'), function(req, res, next) {
     accountId: req.body.accountId,
     savedKey: req.body.savedKey
   };
-  AWSHelper.registerFace(retVal.savedKey,retVal.accountId);
-  res.send(retVal);
+  AWSHelper.registerFace(retVal.savedKey,retVal.accountId,function(err,data){
+    if(data&&data.FaceRecords){
+      var faceId;
+      for (var i = 0; i < data.FaceRecords.length; i++) {
+        var frec = data.FaceRecords[i];
+        console.log('logging face:');
+        console.log(frec.Face);
+        faceId = frec.Face.FaceId;
+      }
+      if(faceId){
+        retVal.faceId = faceId;
+        res.send(retVal);
+        return;
+      }
+      else{
+        console.log('err: no face id found');
+      }
+    }
+    if(err){
+      console.log('err:upload:registerFace');
+      console.log(err);
+    }
+    res.send(retVal);
+  });
+  // res.send(retVal);
 });
 
 app.get('/fetch/:id', function (req, res) {
@@ -107,6 +129,16 @@ app.get('/fetch/:id', function (req, res) {
   res.redirect('https://s3-us-west-2.amazonaws.com/incrm.whosabsent/'+req.params.id);
 });
 
+
+app.get('/deleteFace/:id', function (req, res) {
+  console.log('fetching..');
+  console.log(req.params.id);
+  AWSHelper.deleteFace(req.params.id,function(err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else     console.log(data);           // successful response
+    res.send('');
+  });
+});
 
 app.get('/s3settings', function (req, res) {
   var key = req.query.key;

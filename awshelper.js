@@ -40,7 +40,16 @@ var AWSHelper = (function () {
                 console.log(data);
         });
     };
-    AWSHelper.registerFace = function (key, id) {
+    AWSHelper.deleteFace = function (faceId, callback) {
+        var params = {
+            CollectionId: AWSHelper.rekCollectionID,
+            FaceIds: [
+                faceId
+            ]
+        };
+        AWSHelper.rekognition.deleteFaces(params, callback);
+    };
+    AWSHelper.registerFace = function (key, id, callback) {
         var params = {
             CollectionId: AWSHelper.rekCollectionID,
             Image: {
@@ -53,10 +62,15 @@ var AWSHelper = (function () {
             ExternalImageId: id
         };
         AWSHelper.rekognition.indexFaces(params, function (err, data) {
-            if (err)
+            if (err) {
+                callback(err, undefined);
                 console.log(err, err.stack);
-            else
+            }
+            else {
+                console.log('data from indexface register');
                 console.log(data);
+                callback(undefined, data);
+            }
         });
     };
     AWSHelper.searchFaces = function (key, callback) {

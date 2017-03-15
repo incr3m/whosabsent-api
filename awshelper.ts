@@ -42,8 +42,17 @@ class AWSHelper{
      else     console.log(data); 
     });
   }
-  
-  static registerFace(key,id){
+  static deleteFace(faceId, callback){
+    var params = {
+      CollectionId: AWSHelper.rekCollectionID, 
+      FaceIds: [
+         faceId
+      ]
+     };
+   AWSHelper.rekognition.deleteFaces(params, callback);
+    
+  }
+  static registerFace(key,id,callback){
     var params = {
       CollectionId: AWSHelper.rekCollectionID, 
       Image: { /* required */
@@ -57,8 +66,15 @@ class AWSHelper{
       ExternalImageId: id
     };
     AWSHelper.rekognition.indexFaces(params, function(err, data) {
-      if (err) console.log(err, err.stack); // an error occurred
-      else     console.log(data);           // successful response
+      if (err){
+        callback(err,undefined);
+        console.log(err, err.stack); // an error occurred
+      }
+      else {
+        console.log('data from indexface register');
+        console.log(data);           // successful response
+        callback(undefined,data);
+      }
     });
     
   }
