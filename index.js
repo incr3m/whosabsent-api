@@ -58,9 +58,16 @@ var upload = multer({
       var key;
       if(req.body.accountId)
         key = "students/"+req.body.accountId+"_"+req.body.key+".jpg";
-      else
-        key = "search/"+req.body.key+".jpg";
+      else{
+        var uKey = req.body.key;
+        if(!uKey)
+          uKey = Math.floor(Date.now() / 1000);
+
+        key = "search/"+uKey+".jpg";
+        console.log('saving search..'+key);
+      }
       req.body.savedKey = key;
+
       cb(null, key);
     }
   })
